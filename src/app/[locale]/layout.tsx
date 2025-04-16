@@ -4,6 +4,8 @@ import { getMessages } from "next-intl/server";
 import { routing } from "@/i18n/routing";
 import { notFound } from "next/navigation";
 import { ClientToaster } from "@/components/ui/ClientToaster";
+import Header from "@/components/globals/Header";
+import Footer from "@/components/globals/Footer";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -18,7 +20,7 @@ export default async function LocaleLayout({
   params: { locale: string };
 }) {
   const { locale } = await params;
-  type Locale = "en" | "ar" ;
+  type Locale = "en" | "ar";
   if (!routing.locales.includes(locale as Locale)) {
     notFound();
   }
@@ -29,12 +31,12 @@ export default async function LocaleLayout({
       <body>
         <NextIntlClientProvider locale={locale} messages={messages}>
           {/* <ReduxProvider> */}
-          {/* <Navbar /> */}
-          <main className="bg-[var(--color-text-black)] min-h-screen rounded-tl-[20px] md:rounded-tl-[30px] lg:rounded-tl-[40px] rounded-tr-[20px] md:rounded-tr-[30px] border-b-0 pb-[50px] lg:rounded-tr-[40px]">
           <ClientToaster />
+          <Header />
+          <main className="bg-[var(--color-text-black)] min-h-screen rounded-tl-[20px] md:rounded-tl-[30px] lg:rounded-tl-[40px] rounded-tr-[20px] md:rounded-tr-[30px] border-b-0 pb-[50px] lg:rounded-tr-[40px]">
             {children}
           </main>
-          {/* <Footer /> */}
+          <Footer />
           {/* <ToastContainer /> */}
           {/* <AutoLogin /> */}
           {/* </ReduxProvider> */}
