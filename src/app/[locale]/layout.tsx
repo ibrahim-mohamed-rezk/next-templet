@@ -6,6 +6,7 @@ import { notFound } from "next/navigation";
 import { ClientToaster } from "@/components/ui/ClientToaster";
 import Header from "@/components/globals/Header";
 import Footer from "@/components/globals/Footer";
+import "../globals.css";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -19,7 +20,7 @@ export default async function LocaleLayout({
   children: React.ReactNode;
   params: { locale: string };
 }) {
-  const { locale } = await params;
+  const { locale } = params;
   type Locale = "en" | "ar";
   if (!routing.locales.includes(locale as Locale)) {
     notFound();

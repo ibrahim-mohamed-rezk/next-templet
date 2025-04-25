@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import { useLocale } from 'next-intl';
-import Image from 'next/image';
-import { useState } from 'react';
-import { Link, routing, usePathname, useRouter } from '@/i18n/routing';
+import { useLocale, useTranslations } from "next-intl";
+import Image from "next/image";
+import { useState } from "react";
+import { Link, routing, usePathname, useRouter } from "@/i18n/routing";
 
 export default function Header() {
   const router = useRouter();
@@ -16,18 +16,31 @@ export default function Header() {
     setOpen(false);
   };
 
+  const t = useTranslations();
+
   return (
     <header className="bg-white shadow p-4 flex items-center justify-between">
-      <Link href="/" locale={currentLocale} className="text-xl font-bold">
+      <Link href="/" className="text-xl font-bold">
         <span className="text-blue-500">My</span>Site
       </Link>
 
       <nav className="flex items-center gap-6">
-        <Link href="/" locale={currentLocale} className="hover:text-blue-500">Home</Link>
-        <Link href="/about" locale={currentLocale} className="hover:text-blue-500">About</Link>
+        <Link href="/" locale={currentLocale} className="hover:text-blue-500">
+          Home
+        </Link>
+        <Link
+          href="/protected_route"
+          locale={currentLocale}
+          className="hover:text-blue-500"
+        >
+          Protecged route
+        </Link>
 
         <div className="relative">
-          <button onClick={() => setOpen(!open)} className="flex items-center gap-2 border rounded px-2 py-1">
+          <button
+            onClick={() => setOpen(!open)}
+            className="flex items-center gap-2 border rounded px-2 py-1"
+          >
             <Image
               src={`/flags/${currentLocale}.svg`}
               alt={currentLocale}
@@ -45,7 +58,12 @@ export default function Header() {
                   onClick={() => changeLanguage(locale)}
                   className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 w-full text-left"
                 >
-                  <Image src={`/flags/${locale}.svg`} alt={locale} width={20} height={15} />
+                  <Image
+                    src={`/flags/${locale}.svg`}
+                    alt={locale}
+                    width={20}
+                    height={15}
+                  />
                   <span className="uppercase">{locale}</span>
                 </button>
               ))}

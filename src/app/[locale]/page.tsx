@@ -1,13 +1,11 @@
-import { useTranslations } from 'next-intl';
-import Link from 'next/link';
+import { useTranslations } from "next-intl";
 
 export default function HomePage() {
-  const t = useTranslations();
+  const t = useTranslations("hoeme");
 
   return (
     <div>
-      <h1>{t('DashboardTitle')}</h1>
-      <Link href="/en">{'🇬🇧 English'}</Link> | <Link href="/ar">{'🇸🇦 العربية'}</Link>
+      <h1>{t("welcome")}</h1>
     </div>
   );
 }
