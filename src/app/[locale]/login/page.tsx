@@ -4,6 +4,8 @@ import { useState } from "react";
 import { useTranslations } from "next-intl";
 import toast from "react-hot-toast";
 import { useRouter } from "@/i18n/routing";
+import { postData } from "@/libs/axios/server";
+import axios, { AxiosHeaders } from "axios";
 
 export default function LoginPage() {
   const t = useTranslations("auth");
@@ -14,28 +16,30 @@ export default function LoginPage() {
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoading(true);
-
     try {
-      const res = await fetch("/api/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          token: "12asdfgfdsgsdg#sdgsfgdfgsdfg12dsfgsd5gsd6fg", // Replace with your actual token from backend response
-          user:{"id": "1", "name": "John Doe"}, // Replace with your actual user data from backend response
-        }),
+      const response = await postData(
+        "customer/login-api",
+        { email, password },
+        new AxiosHeaders({
+          Authorization: `Bearer token`,
+          "Content-Type": "multipart/form-data",
+        })
+      );
+
+      await axios.post("/api/auth/login", {
+        token: response.token,
+        user: JSON.stringify(response.data),
+        remember: true,
       });
 
-      if (res.ok) {
-        toast.success(t("LoginSuccess"));
-        router.push("/protected_route");
-      } else {
-        toast.error(t("LoginFailed"));
-      }
-    } catch (error) {
-      toast.error(t("NetworkError"));
-    } finally {
+      toast.success("Login successful");
+      setEmail("");
+      setPassword("");
       setIsLoading(false);
+      router.push("/dashboard");
+    } catch (error) {
+      toast.error("Login failed, please try again.");
+      throw error;
     }
   };
 
