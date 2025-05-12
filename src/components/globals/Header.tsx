@@ -4,16 +4,20 @@ import { useLocale, useTranslations } from "next-intl";
 import Image from "next/image";
 import { useState } from "react";
 import { Link, routing, usePathname, useRouter } from "@/i18n/routing";
+import { useSearchParams } from "next/navigation";
 
 export default function Header() {
   const router = useRouter();
   const pathname = usePathname();
   const currentLocale = useLocale();
   const [open, setOpen] = useState(false);
+  const searchParams = useSearchParams();
 
-  const changeLanguage = (locale: string) => {
-    router.replace(pathname, { locale });
-    setOpen(false);
+  const changeLanguage = (l: string) => {
+    const paramsString = searchParams.toString();
+    const url = paramsString ? `${pathname}?${paramsString}` : pathname;
+
+    router.replace(url, { locale: l });
   };
 
   const t = useTranslations();
